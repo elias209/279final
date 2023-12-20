@@ -1,3 +1,5 @@
+// App.jsx
+
 import SignInSide from "./components/Login.jsx";
 import PrimarySearchAppBar from "./components/Navbar";
 import SignUp from "./components/Signup.jsx";

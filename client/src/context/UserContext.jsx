@@ -6,6 +6,8 @@ export const UserProvider = ({ children }) => {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
 
+  console.log("Password in UserProvider:", password);
+
   return (
     <UserContext.Provider
       value={{ userName, setUserName, password, setPassword }}

@@ -41,6 +41,7 @@ const darkTheme = createTheme({
 
 export default function Album() {
   const { userName } = useContext(UserContext);
+
   const [expandedCard, setExpandedCard] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);

@@ -1,3 +1,5 @@
+// userProfile.jsx
+
 import * as React from "react";
 import { useContext } from "react";
 import Avatar from "@mui/material/Avatar";
@@ -34,7 +36,7 @@ const ProfilePicture = () => (
   </Avatar>
 );
 
-export default function Album() {
+const UserProfile = () => {
   const { userName, password } = useContext(UserContext);
 
   return (
@@ -92,4 +94,6 @@ export default function Album() {
       </main>
     </ThemeProvider>
   );
-}
+};
+
+export default UserProfile;
