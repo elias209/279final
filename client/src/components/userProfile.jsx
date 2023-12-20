@@ -35,10 +35,8 @@ const ProfilePicture = () => (
 );
 
 export default function Album() {
-  const { userName, userPassword } = useContext(UserContext);
+  const { userName, password } = useContext(UserContext);
 
-  console.log("UserProfile - userName:", userName);
-  console.log("UserProfile - userPassword:", userPassword);
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
@@ -49,8 +47,7 @@ export default function Album() {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            backgroundImage:
-              "url(https://source.unsplash.com/random?wallpapers)",
+            backgroundImage: "url(../public/signinpic.jpg)",
             backgroundSize: "cover",
             backgroundPosition: "center",
             height: "100vh",
@@ -82,9 +79,9 @@ export default function Album() {
 
                 <CardContent sx={{ backgroundColor: "black", color: "#fff" }}>
                   <Typography variant="body1">Username: {userName}</Typography>
-                  {userPassword !== undefined && (
+                  {password !== undefined && (
                     <Typography variant="body1">
-                      Password: {userPassword}
+                      Password: {password}
                     </Typography>
                   )}
                 </CardContent>

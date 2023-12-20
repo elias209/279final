@@ -146,6 +146,13 @@ export default function PrimarySearchAppBar() {
       </MenuItem>
 
       <MenuItem
+        onClick={() => navigate("/news")}
+        style={{ fontSize: "18px", padding: "12px" }} // Increase the font size and padding
+      >
+        News
+      </MenuItem>
+
+      <MenuItem
         onClick={() => navigate("/")}
         style={{ fontSize: "18px", padding: "12px" }} // Increase the font size and padding
       >

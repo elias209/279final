@@ -15,6 +15,7 @@ import Copyright from "./Copyright";
 import axios from "axios";
 import { useState, useContext } from "react";
 import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { UserContext } from "../context/UserContext";
 
 const darkTheme = createTheme({
@@ -66,7 +67,8 @@ const darkTheme = createTheme({
 
 export default function SignUp() {
   const navigate = useNavigate();
-  const { setUserName } = useContext(UserContext);
+
+  const { setUserName, setPassword } = useContext(UserContext);
   const [values, setValues] = useState({
     name: "",
     age: "",
@@ -79,20 +81,34 @@ export default function SignUp() {
 
   function handleSubmit(event) {
     event.preventDefault();
+
+    // Email validation
+    if (!values.name.includes("@")) {
+      toast.error("Invalid email address. Please include '@'.");
+      return;
+    }
+
+    // Age validation
+    const ageValue = parseInt(values.age);
+    if (isNaN(ageValue) || ageValue < 13) {
+      toast.error("Invalid age. Age must be 13 or older.");
+      return;
+    }
+
+    // Password strength validation
+    if (values.password.length < 8) {
+      toast.error("Password should be at least 8 characters long.");
+      return;
+    }
+
+    // If all validations pass, proceed with signup
     axios
       .post("http://localhost:3001/signup", { values })
       .then((res) => {
         console.log(res);
-        toast.success(`Successfully Created your account. Welcome!`, {
-          position: "bottom-left",
-          autoClose: 3000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: false,
-          draggable: true,
-          toastStyle: { background: "#E50914", color: "black" },
-        });
+
         setUserName(values.name);
+        setPassword(values.password);
         navigate("/dashboard");
       })
       .catch((err) => console.log(err));
@@ -197,6 +213,14 @@ export default function SignUp() {
           </Box>
         </Grid>
       </Grid>
+      <ToastContainer
+        position="bottom-left"
+        autoClose={3000}
+        hideProgressBar
+        closeOnClick
+        pauseOnHover={false}
+        draggable
+      />
     </ThemeProvider>
   );
 }

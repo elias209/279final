@@ -15,6 +15,8 @@ import { Link as RouterLink, useNavigate } from "react-router-dom";
 import Copyright from "./Copyright";
 import axios from "axios";
 import { UserContext } from "../context/UserContext";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const darkTheme = createTheme({
   palette: {
@@ -75,11 +77,14 @@ export default function SignInSide() {
       .then((res) => {
         console.log(res);
         setUserName(name);
-
         navigate("/dashboard");
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        toast.error("Login failed. Please check your credentials.");
+      });
   }
+
   return (
     <ThemeProvider theme={darkTheme}>
       <Grid container component="main" sx={{ height: "100vh" }}>
@@ -166,6 +171,17 @@ export default function SignInSide() {
           </Box>
         </Grid>
       </Grid>
+      <ToastContainer
+        position="top-center"
+        autoClose={3000}
+        hideProgressBar
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </ThemeProvider>
   );
 }

@@ -1,4 +1,3 @@
-import { useState } from "react";
 import SignInSide from "./components/Login.jsx";
 import PrimarySearchAppBar from "./components/Navbar";
 import SignUp from "./components/Signup.jsx";
@@ -11,6 +10,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { Paper } from "@mui/material";
 import { UserProvider } from "./context/UserContext.jsx";
 import UserProfile from "./components/userProfile.jsx";
+import NewsComponent from "./components/news.jsx";
 
 const darkTheme = createTheme({
   palette: {
@@ -80,6 +80,16 @@ function App() {
                   <>
                     <PrimarySearchAppBar />
                     <UserProfile />
+                  </>
+                }
+              />
+
+              <Route
+                path={"/news"}
+                element={
+                  <>
+                    <PrimarySearchAppBar />
+                    <NewsComponent />
                   </>
                 }
               />

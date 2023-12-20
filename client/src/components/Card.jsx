@@ -18,13 +18,14 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import CommentIcon from "@mui/icons-material/Comment";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import { ToastContainer, toast } from "react-toastify";
+import TextField from "@mui/material/TextField";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { handleLikeClick } from "../utils";
 import ThanksMessage from "./ThanksMessage";
 import Copyright from "./Copyright";
 import { UserContext } from "../context/UserContext";
 import Footer from "./Footer";
+
 const darkTheme = createTheme({
   palette: {
     mode: "dark",
@@ -34,21 +35,21 @@ const darkTheme = createTheme({
     },
   },
   typography: {
-    fontSize: 10, // Set the font size here
+    fontSize: 10,
   },
 });
 
 export default function Album() {
-  const [movies, setMovies] = useState([]);
-  const [expandedCard, setExpandedCard] = useState(null);
   const { userName } = useContext(UserContext);
-  console.log(userName);
+  const [expandedCard, setExpandedCard] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
 
   useEffect(() => {
     const fetchMovies = async () => {
       try {
         const API_KEY = "8ff3a5d6";
-        const TITLE = "all";
+        const TITLE = searchTerm || "all";
         const URL = `https://www.omdbapi.com/?s=${TITLE}&apikey=${API_KEY}&plot=full`;
 
         const response = await fetch(URL);
@@ -58,17 +59,17 @@ export default function Album() {
 
         const finalData = await response.json();
         if (finalData.Search) {
-          setMovies(finalData.Search);
+          setSearchResults(finalData.Search);
         } else {
-          console.error("No Marvel movies found in the API response.");
+          console.error("No movies found in the API response.");
         }
       } catch (error) {
-        console.error("Error fetching Marvel movies:", error);
+        console.error("Error fetching movies:", error);
       }
     };
 
     fetchMovies();
-  }, []);
+  }, [searchTerm]);
 
   const fetchMovieDetails = async (imdbID) => {
     try {
@@ -95,17 +96,15 @@ export default function Album() {
 
       if (expandedCard !== cardId) {
         const detailedData = await fetchMovieDetails(cardId);
-        console.log(detailedData);
 
-        // Update the state with the retrieved data
-        setMovies((prevMovies) => {
+        setSearchResults((prevMovies) => {
           const updatedMovies = prevMovies.map((movie) => {
             if (movie.imdbID === cardId) {
               return {
                 ...movie,
-                Plot: detailedData?.Plot || "", // Update the Plot field
-                Genre: detailedData?.Genre || "", // Update the Genre field
-                Director: detailedData?.Director || "", // Update the Director field
+                Plot: detailedData?.Plot || "",
+                Genre: detailedData?.Genre || "",
+                Director: detailedData?.Director || "",
               };
             }
             return movie;
@@ -116,7 +115,6 @@ export default function Album() {
     }
   };
 
-  // Slider settings
   const settings = {
     dots: true,
     infinite: true,
@@ -166,40 +164,46 @@ export default function Album() {
               paragraph
               sx={{
                 mt: 2,
-                position: "absolute", // Add this line
-                top: 0, // Add this line
+                position: "absolute",
+                top: 0,
                 right: "40px",
-                bottom: "px", // Add this line
               }}
             >
               Welcome, {userName}!
             </Typography>
-          </Container>
-
-          <Container maxWidth="sm">
-            <Typography
-              component="h1"
-              variant="h2"
-              align="center"
-              color="text.primary"
-              gutterBottom
-              sx={{ pt: 4 }}
-            >
-              CineSearch
-            </Typography>
-            <Typography
-              variant="h5"
-              align="center"
-              color="text.secondary"
-              paragraph
-            >
-              Discover, Explore, and Enjoy Your Movie Journey
-            </Typography>
+            <Container maxWidth="sm">
+              <Typography
+                component="h1"
+                variant="h2"
+                align="center"
+                color="text.primary"
+                gutterBottom
+                sx={{ pt: 4 }}
+              >
+                CineSearch
+              </Typography>
+              <Typography
+                variant="h5"
+                align="center"
+                color="text.secondary"
+                paragraph
+              >
+                Discover, Explore, and Enjoy Your Movie Journey
+              </Typography>
+            </Container>
+            <TextField
+              label="Search movies"
+              variant="outlined"
+              fullWidth
+              margin="normal"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
           </Container>
         </Box>
         <Container sx={{ py: 8 }} maxWidth="lg">
           <Slider {...settings}>
-            {movies.map((movie) => (
+            {searchResults.map((movie) => (
               <Grid item key={movie.imdbID} spacing={2}>
                 <Container
                   maxWidth="md"
@@ -211,20 +215,19 @@ export default function Album() {
                 >
                   <Card
                     sx={{
-                      height: "100%", // Set a fixed height for the card
+                      height: "100%",
                       display: "flex",
                       flexDirection: "column",
                       width: "95%",
-                      margin: "0 10px", // Added margin for spacing
+                      margin: "0 10px",
                     }}
                     onClick={() => toggleCardExpansion(movie.imdbID)}
                   >
                     <CardMedia
                       component="div"
                       sx={{
-                        // Maintain aspect ratio and adjust height accordingly
-                        pt: "75%", // Adjust this value based on your preference
-                        backgroundPosition: "top", // Ensure the poster is not cut from the top
+                        pt: "75%",
+                        backgroundPosition: "top",
                       }}
                       image={movie.Poster}
                     />
@@ -257,10 +260,7 @@ export default function Album() {
                         >
                           <VisibilityIcon style={{ color: "white" }} />
                         </Button>
-                        <Button
-                          size="small"
-                          onClick={() => handleLikeClick(movie.Title)}
-                        >
+                        <Button size="small">
                           <FavoriteIcon style={{ color: "white" }} />
                         </Button>
                         <Button size="small">
@@ -279,12 +279,10 @@ export default function Album() {
                         </Typography>
                         <Typography paragraph>Type: {movie.Type}</Typography>
                         <Typography paragraph>
-                          Director: {movie.Director || "N/A"}{" "}
-                          {/* Display "N/A" if Director field is empty */}
+                          Director: {movie.Director || "N/A"}
                         </Typography>
                         <Typography paragraph>
-                          Genre: {movie.Genre || "N/A"}{" "}
-                          {/* Display "N/A" if Genre field is empty */}
+                          Genre: {movie.Genre || "N/A"}
                         </Typography>
                       </CardContent>
                     </Collapse>
@@ -303,10 +301,10 @@ export default function Album() {
         pauseOnHover={false}
         draggable
       />
-
       <Footer />
 
       <ThanksMessage />
+
       <Copyright sx={{ pb: 6 }} />
     </ThemeProvider>
   );
