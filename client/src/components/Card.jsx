@@ -49,6 +49,7 @@ export default function Album() {
   useEffect(() => {
     const fetchMovies = async () => {
       try {
+        // Fetch movies based on the search term
         const API_KEY = "8ff3a5d6";
         const TITLE = searchTerm || "all";
         const URL = `https://www.omdbapi.com/?s=${TITLE}&apikey=${API_KEY}&plot=full`;
@@ -57,6 +58,11 @@ export default function Album() {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
+        /**
+         * Renders a movie search interface with a responsive slider, search input, and footer.
+         *
+         * @returns {JSX.Element} The rendered movie search interface.
+         */
 
         const finalData = await response.json();
         if (finalData.Search) {
@@ -74,6 +80,7 @@ export default function Album() {
 
   const fetchMovieDetails = async (imdbID) => {
     try {
+      // Fetch detailed information for a specific movie
       const API_KEY = "8ff3a5d6";
       const detailURL = `https://www.omdbapi.com/?i=${imdbID}&apikey=${API_KEY}&plot=full`;
       const response = await fetch(detailURL);
@@ -91,6 +98,7 @@ export default function Album() {
 
   const toggleCardExpansion = async (cardId, buttonType) => {
     if (buttonType === "visibility") {
+      // Toggle card expansion and fetch detailed data if expanding
       setExpandedCard((prevExpanded) =>
         prevExpanded === cardId ? null : cardId
       );
@@ -116,6 +124,7 @@ export default function Album() {
     }
   };
 
+  // Settings for the Slider component
   const settings = {
     dots: true,
     infinite: true,
@@ -151,6 +160,7 @@ export default function Album() {
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
       <main>
+        {/* Header section */}
         <Box
           sx={{
             pt: 0,
@@ -158,6 +168,7 @@ export default function Album() {
           }}
         >
           <Container maxWidth="sm">
+            {/* Display user's name */}
             <Typography
               variant="h5"
               align="center"
@@ -173,6 +184,7 @@ export default function Album() {
               Welcome, {userName}!
             </Typography>
             <Container maxWidth="sm">
+              {/* Main title */}
               <Typography
                 component="h1"
                 variant="h2"
@@ -183,6 +195,7 @@ export default function Album() {
               >
                 CineSearch
               </Typography>
+              {/* Subtitle */}
               <Typography
                 variant="h5"
                 align="center"
@@ -192,6 +205,7 @@ export default function Album() {
                 Discover, Explore, and Enjoy Your Movie Journey
               </Typography>
             </Container>
+            {/* Search input */}
             <TextField
               label="Search movies"
               variant="outlined"
@@ -220,6 +234,7 @@ export default function Album() {
             />
           </Container>
         </Box>
+        {/* Movie slider */}
         <Container sx={{ py: 8 }} maxWidth="lg">
           <Slider {...settings}>
             {searchResults.map((movie) => (
@@ -232,6 +247,7 @@ export default function Album() {
                     justifyContent: "center",
                   }}
                 >
+                  {/* Movie card */}
                   <Card
                     sx={{
                       height: "100%",
@@ -242,6 +258,7 @@ export default function Album() {
                     }}
                     onClick={() => toggleCardExpansion(movie.imdbID)}
                   >
+                    {/* Movie poster */}
                     <CardMedia
                       component="div"
                       sx={{
@@ -250,6 +267,7 @@ export default function Album() {
                       }}
                       image={movie.Poster}
                     />
+                    {/* Movie content */}
                     <CardContent
                       sx={{
                         flexGrow: 1,
@@ -263,6 +281,7 @@ export default function Album() {
                         {movie.Plot}
                       </Typography>
                     </CardContent>
+                    {/* Movie actions (visibility, favorite, comment) */}
                     <CardActions>
                       <Stack
                         direction="row"
@@ -271,6 +290,7 @@ export default function Album() {
                         spacing={2}
                         sx={{ width: "100%" }}
                       >
+                        {/* Visibility button */}
                         <Button
                           size="small"
                           onClick={() =>
@@ -279,14 +299,17 @@ export default function Album() {
                         >
                           <VisibilityIcon style={{ color: "white" }} />
                         </Button>
+                        {/* Favorite button */}
                         <Button size="small">
                           <FavoriteIcon style={{ color: "white" }} />
                         </Button>
+                        {/* Comment button */}
                         <Button size="small">
                           <CommentIcon style={{ color: "white" }} />
                         </Button>
                       </Stack>
                     </CardActions>
+                    {/* Collapse section with additional movie details */}
                     <Collapse
                       in={expandedCard === movie.imdbID}
                       timeout="auto"
@@ -312,6 +335,7 @@ export default function Album() {
           </Slider>
         </Container>
       </main>
+      {/* Toast notification container */}
       <ToastContainer
         position="bottom-left"
         autoClose={3000}
@@ -320,10 +344,11 @@ export default function Album() {
         pauseOnHover={false}
         draggable
       />
+      {/* Footer component */}
       <Footer />
-
+      {/* ThanksMessage component */}
       <ThanksMessage />
-
+      {/* Copyright component */}
       <Copyright sx={{ pb: 6 }} />
     </ThemeProvider>
   );

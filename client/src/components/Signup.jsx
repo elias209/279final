@@ -18,6 +18,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { UserContext } from "../context/UserContext";
 
+// Create a dark theme using Material-UI createTheme function
 const darkTheme = createTheme({
   palette: {
     mode: "dark",
@@ -28,6 +29,7 @@ const darkTheme = createTheme({
       main: "#E50914",
     },
   },
+  // Override styles for specific Material-UI components
   components: {
     MuiButton: {
       styleOverrides: {
@@ -65,20 +67,49 @@ const darkTheme = createTheme({
   },
 });
 
+/**
+ * Renders a sign-up form component.
+ *
+ * This component uses the `useNavigate` and `useContext` hooks from React Router to handle navigation and access the `UserContext`.
+ * It also utilizes the `useState` hook to manage form values and includes form validation logic.
+ * When the form is submitted, it makes a POST request to a server using Axios.
+ * If the request is successful, it updates the user context and navigates to the dashboard.
+ *
+ * @returns {JSX.Element} The sign-up form component.
+ *
+ * @example
+ * ```javascript
+ * import SignUp from "./SignUp";
+ *
+ * function App() {
+ *   return (
+ *     <div>
+ *       <SignUp />
+ *     </div>
+ *   );
+ * }
+ * ```
+ */
 export default function SignUp() {
+  // Use the useNavigate hook from React Router for navigation
   const navigate = useNavigate();
 
+  // Use the useContext hook to access the UserContext
   const { setUserName, setPassword } = useContext(UserContext);
+
+  // Use the useState hook to manage form values
   const [values, setValues] = useState({
     name: "",
     age: "",
     password: "",
   });
 
+  // Handle changes in form inputs
   const handleChange = (event) => {
     setValues({ ...values, [event.target.name]: event.target.value });
   };
 
+  // Handle form submission
   function handleSubmit(event) {
     event.preventDefault();
 
@@ -101,12 +132,13 @@ export default function SignUp() {
       return;
     }
 
-    // If all validations pass, proceed with signup
+    // If all validations pass, make a POST request to the server
     axios
       .post("http://localhost:3001/signup", { values })
       .then((res) => {
         console.log(res);
 
+        // Update context and navigate to the dashboard
         setUserName(values.name);
         setPassword(values.password);
         navigate("/dashboard");
@@ -156,6 +188,7 @@ export default function SignUp() {
               onSubmit={handleSubmit}
               sx={{ mt: 1 }}
             >
+              {/* TextField components for Name, Age, and Password */}
               <TextField
                 margin="normal"
                 required
@@ -192,6 +225,7 @@ export default function SignUp() {
                 onChange={handleChange}
               />
 
+              {/* Button component for form submission */}
               <Button
                 type="submit"
                 fullWidth
@@ -200,19 +234,26 @@ export default function SignUp() {
               >
                 Sign Up
               </Button>
+
+              {/* Grid container for navigation link */}
               <Grid container>
                 <Grid item xs></Grid>
                 <Grid item>
+                  {/* React Router Link for navigation */}
                   <Link component={RouterLink} to="/" variant="body2">
                     {"Already have an account? Sign in"}
                   </Link>
                 </Grid>
               </Grid>
+
+              {/* Copyright component */}
               <Copyright sx={{ mt: 5 }} />
             </Box>
           </Box>
         </Grid>
       </Grid>
+
+      {/* ToastContainer for displaying notifications */}
       <ToastContainer
         position="bottom-left"
         autoClose={3000}

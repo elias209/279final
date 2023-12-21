@@ -37,6 +37,17 @@ const darkTheme = createTheme({
   },
 });
 
+/**
+ * Renders a React functional component that displays a list of movie cards.
+ * Each card represents a movie and includes a title, description, and buttons for expanding the card, liking the movie, and commenting on the movie.
+ * The component uses Material-UI components and styling for the layout and appearance.
+ *
+ * @returns {JSX.Element} The rendered Comments component.
+ *
+ * @example
+ * <Comments />
+ * // Renders the Comments component, displaying a list of movie cards.
+ */
 export default function Comments() {
   const [expandedCard, setExpandedCard] = useState(null);
 

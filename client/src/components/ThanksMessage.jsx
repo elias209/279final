@@ -2,6 +2,11 @@ import React from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 
+/**
+ * Functional component for displaying a thanks message.
+ *
+ * @returns {JSX.Element} The JSX element containing the thanks message.
+ */
 const ThanksMessage = () => {
   return (
     <Box sx={{ p: 0 }}>

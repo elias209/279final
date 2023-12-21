@@ -58,6 +58,11 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
+/**
+ * Renders a navigation bar component with a burger menu and a mobile menu.
+ *
+ * @returns {JSX.Element} The rendered navigation bar component.
+ */
 export default function PrimarySearchAppBar() {
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const [burgerMenuAnchorEl, setBurgerMenuAnchorEl] = React.useState(null);
@@ -119,6 +124,7 @@ export default function PrimarySearchAppBar() {
       open={isBurgerMenuOpen}
       onClose={handleBurgerMenuClose}
     >
+      {/* Menu items with onClick handlers to navigate to different routes */}
       <MenuItem
         onClick={() => navigate("/dashboard")}
         style={{ fontSize: "18px", padding: "12px" }} // Increase the font size and padding
@@ -163,8 +169,11 @@ export default function PrimarySearchAppBar() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
+      {/* AppBar component for the navigation bar */}
       <AppBar position="static" sx={{ backgroundColor: "#E50914" }}>
+        {/* Toolbar component containing navigation elements */}
         <Toolbar>
+          {/* IconButton for the burger menu */}
           <IconButton
             size="large"
             edge="start"
@@ -175,6 +184,8 @@ export default function PrimarySearchAppBar() {
           >
             <MenuIcon />
           </IconButton>
+
+          {/* Typography component for the app title */}
           <Typography variant="h6" noWrap component="div" sx={{ fontSize: 24 }}>
             CineSearch
           </Typography>
@@ -188,9 +199,12 @@ export default function PrimarySearchAppBar() {
             onClick={handleMobileMenuOpen}
             color="inherit"
             sx={{ display: { xs: "none", md: "flex" } }} // Show only for md screen size
-          ></IconButton>
+          >
+            <MoreIcon />
+          </IconButton>
         </Toolbar>
       </AppBar>
+      {/* Render mobile and burger menus */}
       {renderMobileMenu}
       {renderBurgerMenu}
     </Box>

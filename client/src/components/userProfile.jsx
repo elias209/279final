@@ -21,6 +21,12 @@ const darkTheme = createTheme({
 });
 
 const ProfilePicture = ({ profileImage }) => (
+  /**
+   * Renders an avatar image based on the provided profile image URL.
+   *
+   * @param {string} profileImage - The URL of the profile image to be displayed.
+   * @returns {JSX.Element} - The rendered Avatar component.
+   */
   <Avatar
     src={profileImage}
     sx={{
@@ -87,11 +93,6 @@ const UserProfile = () => {
                     </Typography>
                   )}
                   {/* Input for uploading a new profile picture */}
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleFileChange}
-                  />
                 </CardContent>
               </Card>
             </Grid>

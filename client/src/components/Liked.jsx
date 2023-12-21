@@ -36,6 +36,11 @@ const darkTheme = createTheme({
   },
 });
 
+/**
+ * Renders a React component that displays a list of movie cards.
+ *
+ * @returns {JSX.Element} The rendered React component.
+ */
 export default function Likedpage() {
   const [expandedCard, setExpandedCard] = useState(null);
 
