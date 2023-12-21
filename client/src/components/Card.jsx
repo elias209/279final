@@ -199,6 +199,24 @@ export default function Album() {
               margin="normal"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
+              sx={{
+                "& label.Mui-focused": {
+                  color: "red",
+                },
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": {
+                    borderColor: "red",
+                    borderWidth: "3px",
+                    borderRadius: "15px", // Set the border size to 5px
+                  },
+                  "&:hover fieldset": {
+                    borderColor: "red",
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "red",
+                  },
+                },
+              }}
             />
           </Container>
         </Box>

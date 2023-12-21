@@ -1,7 +1,5 @@
-// userProfile.jsx
-
 import * as React from "react";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -22,28 +20,32 @@ const darkTheme = createTheme({
   },
 });
 
-const ProfilePicture = () => (
+const ProfilePicture = ({ profileImage }) => (
   <Avatar
+    src={profileImage}
     sx={{
       width: 100,
       height: 100,
       borderRadius: "50%",
       margin: "0 auto",
     }}
-  >
-    {/* You can add an icon or an image here */}
-    {/* For example: <img src="/path/to/placeholder-image.jpg" alt="Profile" /> */}
-  </Avatar>
+  />
 );
 
 const UserProfile = () => {
   const { userName, password } = useContext(UserContext);
+  const [profileImage, setProfileImage] = useState("");
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+
+    setProfileImage(URL.createObjectURL(file));
+  };
 
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
       <main>
-        {/* Hero unit */}
         <Container
           sx={{
             display: "flex",
@@ -55,7 +57,6 @@ const UserProfile = () => {
             height: "100vh",
           }}
         >
-          {/* End hero unit */}
           <Grid container spacing={10}>
             <Grid item xs={12} sm={6} md={4}>
               <Card
@@ -75,8 +76,7 @@ const UserProfile = () => {
                     backgroundColor: "black",
                   }}
                 >
-                  {/* Use the ProfilePicture component */}
-                  <ProfilePicture />
+                  <ProfilePicture profileImage={profileImage} />
                 </CardMedia>
 
                 <CardContent sx={{ backgroundColor: "black", color: "#fff" }}>
@@ -86,6 +86,12 @@ const UserProfile = () => {
                       Password: {password}
                     </Typography>
                   )}
+                  {/* Input for uploading a new profile picture */}
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                  />
                 </CardContent>
               </Card>
             </Grid>
